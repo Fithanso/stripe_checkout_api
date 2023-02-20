@@ -1,33 +1,41 @@
 <html>
   <head>
-    <title>Buy cool new product</title>
+    <title>Buy our cool products</title>
   </head>
   <body>
-    <h1>{{ item.name }}</h1>
-    <p>{{ item.description }}</p>
-    <p>{{ item.price }}</p>
 
-    <button id="buy-button">Checkout</button>
-    <script
-    src="https://code.jquery.com/jquery-3.6.3.js"
-    integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
-    crossorigin="anonymous"></script>
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-      var stripe = Stripe('{{ stripe_publishable_api_key }}');
-      var buyButton = document.getElementById('buy-button');
-      buyButton.addEventListener('click', function() {
-        $.ajax({
-          url: '{% url 'buy_item' pk=item.pk %}',
-          type: 'get',
-          success: function(data) {
-              stripe.redirectToCheckout({ sessionId: data['session_id'] })
-          },
-          failure: function(data) {
-              alert('Got an error, sorry');
-          }
+    <h1>{{ error }}</h1>
+
+    {% if not error %}
+      {% for item in items %}
+        <h1>{{ item.item.name }} x {{ item.quantity }}</h1>
+        <p>{{ item.item.description }}</p>
+        <p>{{ item.item.price }}</p>
+      {% endfor %}
+
+      <button id="buy-button">Checkout</button>
+      <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"></script>
+      <script src="https://js.stripe.com/v3/"></script>
+      <script>
+        var stripe = Stripe('{{ stripe_publishable_api_key }}');
+        var buyButton = document.getElementById('buy-button');
+        buyButton.addEventListener('click', function() {
+          $.ajax({
+            url: '{{ buy_request_link }}',
+            type: 'get',
+
+            success: function(data) {
+                stripe.redirectToCheckout({ sessionId: data['session_id'] })
+            },
+            failure: function(data) {
+                alert('Got an error, sorry');
+            }
+          });
         });
-      });
-    </script>
+      </script>
+    {% endif %}
   </body>
 </html>
