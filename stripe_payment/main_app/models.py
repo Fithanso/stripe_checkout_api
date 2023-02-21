@@ -1,6 +1,9 @@
 from django.db import models
 
 
+from stripe_payment import settings
+
+
 class Item(models.Model):
     name = models.CharField(max_length=255, verbose_name='Name')
     description = models.CharField(max_length=255, verbose_name='Description')

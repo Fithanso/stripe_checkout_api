@@ -59,6 +59,13 @@ class ItemCheckout(APIView):
         return Response(context_data, template_name='main_app/checkout.html')
 
 
+class ItemViewSet(ModelViewSet):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+    permission_classes = [AllowAny]
+
+
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

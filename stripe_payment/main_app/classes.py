@@ -35,3 +35,6 @@ class StripeManager:
             })
 
         return line_items
+
+
+

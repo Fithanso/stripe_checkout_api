@@ -5,7 +5,8 @@ from rest_framework.routers import SimpleRouter
 from .views import *
 
 router = SimpleRouter()
-router.register(r'orders', OrderViewSet, basename='order')
+router.register(r'items', ItemViewSet)
+router.register(r'orders', OrderViewSet)
 router.register(r'order-items', OrderItemViewSet, basename='order-item')
 
 urlpatterns = [
